@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Centro de Comando Fênix - Enterprise v4</title>
+    <title>Centro de Comando Fênix - Enterprise v5</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
@@ -14,7 +14,7 @@
         <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 shadow-lg flex justify-between items-center">
             <div>
                 <h1 class="text-lg font-bold text-blue-400">🔥 Fênix Enterprise</h1>
-                <p class="text-xs text-slate-400">Cloud Ecosystem & Hub v4</p>
+                <p class="text-xs text-slate-400">Cloud Ecosystem & Hub v5</p>
             </div>
             <span class="text-xs bg-emerald-500/10 text-emerald-400 px-2.5 py-1 rounded border border-emerald-500/20 animate-pulse">Online</span>
         </div>
@@ -26,9 +26,20 @@
             <p class="text-xs text-slate-300 text-center font-medium" id="stats-info">A sincronizar estatísticas...</p>
         </div>
 
-        <!-- 1. Calculadora de Royalties KDP (Nova!) -->
+        <!-- 1. Simulador de Câmbio KDP (USD -> BRL) - NOVO! -->
         <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 shadow-lg space-y-3">
-            <h2 class="text-sm font-semibold text-orange-400">📚 Calculadora de Royalties KDP</h2>
+            <h2 class="text-sm font-semibold text-emerald-400">💵 Conversor KDP (USD para BRL)</h2>
+            <div class="space-y-2">
+                <input type="number" id="kdp-usd" placeholder="Royalties em Dólar (USD)" value="150" class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2 text-xs text-slate-200">
+                <input type="number" id="kdp-cotacao" placeholder="Cotação Atual do Dólar (R$)" value="5.50" class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2 text-xs text-slate-200">
+                <button onclick="converterDolar()" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-medium py-2 rounded-lg text-xs transition">Calcular Conversão em Reais</button>
+                <div id="kdp-cambio-resultado" class="hidden text-xs bg-slate-950 p-2.5 rounded border border-slate-800 text-slate-300 font-medium"></div>
+            </div>
+        </div>
+
+        <!-- 2. Calculadora de Royalties KDP -->
+        <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 shadow-lg space-y-3">
+            <h2 class="text-sm font-semibold text-orange-400">📚 Calculadora de Custos KDP</h2>
             <div class="space-y-2">
                 <input type="number" id="kdp-paginas" placeholder="Número de Páginas" value="120" class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2 text-xs text-slate-200">
                 <input type="number" id="kdp-preco-venda" placeholder="Preço de Venda (R$)" value="39.90" class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2 text-xs text-slate-200">
@@ -37,29 +48,32 @@
             </div>
         </div>
 
-        <!-- 2. Checkout Mercado Pago -->
+        <!-- 3. Gestor de Tarefas do Projeto - NOVO! -->
         <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 shadow-lg space-y-3">
-            <h2 class="text-sm font-semibold text-emerald-400">🛒 Checkout Mercado Pago</h2>
+            <h2 class="text-sm font-semibold text-purple-400">📋 Roadmap & Tarefas</h2>
+            <div class="flex gap-2">
+                <input type="text" id="nova-tarefa" placeholder="Nova tarefa (ex: Publicar e-book)..." class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2 text-xs text-slate-200">
+                <button onclick="adicionarTarefa()" class="bg-purple-600 hover:bg-purple-500 text-white px-3 py-2 rounded-lg text-xs font-medium transition">+</button>
+            </div>
+            <div id="lista-tarefas" class="space-y-1.5 max-h-36 overflow-y-auto"></div>
+        </div>
+
+        <!-- 4. Checkout Mercado Pago -->
+        <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 shadow-lg space-y-3">
+            <h2 class="text-sm font-semibold text-teal-400">🛒 Checkout Mercado Pago</h2>
             <input type="text" id="produto-nome" value="E-book KDP Avançado" class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2 text-xs text-slate-200">
             <input type="number" id="produto-preco" value="49.00" class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2 text-xs text-slate-200">
-            <button onclick="comprarAgora()" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-medium py-2.5 rounded-lg text-xs transition">Gerar Pagamento Real</button>
+            <button onclick="comprarAgora()" class="w-full bg-teal-600 hover:bg-teal-500 text-white font-medium py-2.5 rounded-lg text-xs transition">Gerar Pagamento Real</button>
         </div>
 
-        <!-- 3. Gerador Pix Rápido -->
-        <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 shadow-lg space-y-2">
-            <h2 class="text-sm font-semibold text-teal-400">⚡ Pix Copia e Cola / QR Code</h2>
-            <button onclick="gerarPixInstantaneo()" class="w-full bg-teal-600 hover:bg-teal-500 text-white font-medium py-2 rounded-lg text-xs transition">Gerar Chave Pix de Venda</button>
-            <div id="pix-box" class="hidden text-xs bg-slate-950 p-2 rounded border border-slate-800 text-teal-300 font-mono break-all"></div>
-        </div>
-
-        <!-- 4. Gerador de Tokens & Chaves API -->
+        <!-- 5. Gerador de Tokens & Chaves API -->
         <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 shadow-lg space-y-2">
             <h2 class="text-sm font-semibold text-indigo-400">🔑 Gerador de Tokens & Chaves API</h2>
             <button onclick="gerarTokenSeguro()" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-medium py-2 rounded-lg text-xs transition">Gerar Chave Segura</button>
             <div id="token-box" class="hidden text-xs bg-slate-950 p-2 rounded border border-slate-800 text-indigo-300 font-mono break-all select-all"></div>
         </div>
 
-        <!-- 5. Bloco de Notas / Rascunho KDP -->
+        <!-- 6. Bloco de Notas / Rascunho KDP -->
         <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 shadow-lg space-y-2">
             <h2 class="text-sm font-semibold text-pink-400">📝 Rascunho & Ideias KDP</h2>
             <textarea id="rascunho-input" placeholder="Escreve uma ideia de livro ou notas..." class="w-full h-20 bg-slate-950 border border-slate-800 rounded-lg p-2 text-xs text-slate-200 resize-none"></textarea>
@@ -70,24 +84,12 @@
             <div id="rascunho-status" class="text-[10px] text-slate-400 text-center"></div>
         </div>
 
-        <!-- 6. Automação KDP (Python) -->
-        <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 shadow-lg space-y-2">
-            <h2 class="text-sm font-semibold text-cyan-400">🖨️ Automação KDP (ReportLab)</h2>
-            <button onclick="alert('Script Python KDP acionado no servidor!')" class="w-full bg-cyan-600 hover:bg-cyan-500 text-white font-medium py-2 rounded-lg text-xs transition">Compilar e Enviar Manuscrito</button>
-        </div>
-
-        <!-- 7. GitHub Actions (CI/CD) -->
-        <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 shadow-lg space-y-2">
-            <h2 class="text-sm font-semibold text-rose-400">📱 GitHub Actions (CI/CD)</h2>
-            <button onclick="alert('Pipeline de APK disparada com sucesso!')" class="w-full bg-rose-600 hover:bg-rose-500 text-white font-medium py-2 rounded-lg text-xs transition">Disparar Build APK Remoto</button>
-        </div>
-
-        <!-- 8. Monitor de Logs -->
+        <!-- 7. Monitor de Logs -->
         <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 shadow-lg space-y-2">
             <h2 class="text-sm font-semibold text-violet-400">🔍 Logs do Sistema (Termux/Vercel)</h2>
             <div id="system-logs" class="bg-slate-950 p-2 rounded border border-slate-800 text-[10px] font-mono text-slate-400 h-16 overflow-y-auto">
-                [INFO] Sistema operativo e funcional na v4.<br>
-                [READY] Módulos de cálculo e KDP prontos.
+                [INFO] Sistema atualizado para v5 com sucesso.<br>
+                [READY] Módulos de câmbio e tarefas ativos.
             </div>
         </div>
 
@@ -96,7 +98,7 @@
     <script>
         let myChart = null;
 
-        function initChart(vendasHoje, faturamento) {
+        function initChart(vendasHoje) {
             const ctx = document.getElementById('salesChart').getContext('2d');
             if(myChart) myChart.destroy();
             myChart = new Chart(ctx, {
@@ -115,18 +117,25 @@
                 const data = await res.json();
                 const totalFormatado = Number(data.faturamentoTotal || 0).toFixed(2).replace('.', ',');
                 document.getElementById('stats-info').innerHTML = `Hoje: <span class="text-amber-400">${data.vendasHoje || 0} vendas</span> | Total: <span class="text-emerald-400">R$ ${totalFormatado}</span>`;
-                initChart(data.vendasHoje || 0, data.faturamentoTotal || 0);
+                initChart(data.vendasHoje || 0);
             } catch (e) {
                 document.getElementById('stats-info').innerText = "Modo autónomo ativo (Simulação).";
-                initChart(4, 196.00);
+                initChart(4);
             }
+        }
+
+        function converterDolar() {
+            const usd = parseFloat(document.getElementById('kdp-usd').value) || 0;
+            const cotacao = parseFloat(document.getElementById('kdp-cotacao').value) || 0;
+            const totalBrl = usd * cotacao;
+            const resBox = document.getElementById('kdp-cambio-resultado');
+            resBox.classList.remove('hidden');
+            resBox.innerHTML = `Total Convertido: <span class="text-emerald-400 font-bold">R$ ${totalBrl.toFixed(2).replace('.', ',')}</span>`;
         }
 
         function calcularRoyaltiesKDP() {
             const paginas = parseFloat(document.getElementById('kdp-paginas').value) || 0;
             const preco = parseFloat(document.getElementById('kdp-preco-venda').value) || 0;
-            
-            // Custo fixo base Amazon KDP (exemplo p/ livro impresso preto e branco padrão)
             const custoImpressao = 2.25 + (paginas * 0.05);
             const royaltyBruto = (preco * 0.60) - custoImpressao;
             const lucroFinal = royaltyBruto > 0 ? royaltyBruto : 0;
@@ -137,6 +146,35 @@
                 <div>Custo Est. Impressão: <span class="text-rose-400">R$ ${custoImpressao.toFixed(2).replace('.', ',')}</span></div>
                 <div>Royalties Estimados (60%): <span class="text-emerald-400 font-bold">R$ ${lucroFinal.toFixed(2).replace('.', ',')} / un</span></div>
             `;
+        }
+
+        // Tarefas (Roadmap)
+        let tarefas = JSON.parse(localStorage.getItem('fenix_tarefas') || '["Publicar Livro 1 na KDP", "Configurar Webhook Supabase"]');
+
+        function renderizarTarefas() {
+            const container = document.getElementById('lista-tarefas');
+            container.innerHTML = '';
+            tarefas.forEach((t, index) => {
+                const div = document.createElement('div');
+                div.className = "flex justify-between items-center bg-slate-950 p-2 rounded border border-slate-800 text-xs text-slate-300";
+                div.innerHTML = `<span>🔹 ${t}</span> <button onclick="removerTarefa(${index})" class="text-rose-400 hover:text-rose-300 font-bold px-1">×</button>`;
+                container.appendChild(div);
+            });
+            localStorage.setItem('fenix_tarefas', JSON.stringify(tarefas));
+        }
+
+        function adicionarTarefa() {
+            const input = document.getElementById('nova-tarefa');
+            if(input.value.trim() !== '') {
+                tarefas.push(input.value.trim());
+                input.value = '';
+                renderizarTarefas();
+            }
+        }
+
+        function removerTarefa(index) {
+            tarefas.splice(index, 1);
+            renderizarTarefas();
         }
 
         async function comprarAgora() {
@@ -154,12 +192,6 @@
             } catch (e) {
                 alert("Erro de conexão.");
             }
-        }
-
-        function gerarPixInstantaneo() {
-            const box = document.getElementById('pix-box');
-            box.classList.remove('hidden');
-            box.innerText = "00020126580014br.gov.bcb.pix... [CHAVE PIX DINÂMICA GERADA]";
         }
 
         function gerarTokenSeguro() {
@@ -187,6 +219,7 @@
         window.onload = () => {
             const salvo = localStorage.getItem('fenix_rascunho');
             if(salvo) document.getElementById('rascunho-input').value = salvo;
+            renderizarTarefas();
             carregarEstatisticas();
         };
     </script>
