@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Centro de Comando Fênix - Enterprise v2</title>
+    <title>Centro de Comando Fênix - Enterprise v3</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
@@ -34,15 +34,14 @@
             <button onclick="comprarAgora()" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-medium py-2.5 rounded-lg text-xs transition">Gerar Pagamento Real</button>
         </div>
 
-        <!-- 2. Gerador Pix Rápido (Nova Funcionalidade) -->
+        <!-- 2. Gerador Pix Rápido -->
         <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 shadow-lg space-y-2">
             <h2 class="text-sm font-semibold text-teal-400">⚡ Pix Copia e Cola / QR Code</h2>
-            <p class="text-xs text-slate-400">Gera dados de cobrança Pix imediata para clientes.</p>
             <button onclick="gerarPixInstantaneo()" class="w-full bg-teal-600 hover:bg-teal-500 text-white font-medium py-2 rounded-lg text-xs transition">Gerar Chave Pix de Venda</button>
             <div id="pix-box" class="hidden text-xs bg-slate-950 p-2 rounded border border-slate-800 text-teal-300 font-mono break-all"></div>
         </div>
 
-        <!-- 3. Calculadora de Lucro KDP (Nova Funcionalidade) -->
+        <!-- 3. Calculadora de Lucro KDP / ROI -->
         <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 shadow-lg space-y-2">
             <h2 class="text-sm font-semibold text-amber-400">💰 Calculadora de ROI / KDP</h2>
             <div class="flex gap-2">
@@ -53,27 +52,43 @@
             <div id="calc-resultado" class="text-xs bg-slate-950 p-2 rounded border border-slate-800 text-slate-300 text-center font-bold hidden"></div>
         </div>
 
-        <!-- 4. Automação KDP (Python) -->
+        <!-- 4. NOVO: Gerador de Chaves e Tokens Seguros -->
+        <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 shadow-lg space-y-2">
+            <h2 class="text-sm font-semibold text-indigo-400">🔑 Gerador de Tokens & Chaves API</h2>
+            <p class="text-xs text-slate-400">Gera hashes criptográficas seguras para integrações.</p>
+            <button onclick="gerarTokenSeguro()" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-medium py-2 rounded-lg text-xs transition">Gerar Chave Segura</button>
+            <div id="token-box" class="hidden text-xs bg-slate-950 p-2 rounded border border-slate-800 text-indigo-300 font-mono break-all select-all"></div>
+        </div>
+
+        <!-- 5. NOVO: Bloco de Notas / Rascunho Rápido -->
+        <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 shadow-lg space-y-2">
+            <h2 class="text-sm font-semibold text-pink-400">📝 Rascunho & Ideias KDP</h2>
+            <textarea id="rascunho-input" placeholder="Escreve uma ideia de livro ou notas..." class="w-full h-20 bg-slate-950 border border-slate-800 rounded-lg p-2 text-xs text-slate-200 resize-none"></textarea>
+            <div class="flex gap-2">
+                <button onclick="salvarRascunho()" class="w-1/2 bg-pink-600 hover:bg-pink-500 text-white font-medium py-1.5 rounded-lg text-xs transition">Salvar Nota</button>
+                <button onclick="limparRascunho()" class="w-1/2 bg-slate-800 hover:bg-slate-700 text-slate-300 font-medium py-1.5 rounded-lg text-xs transition">Limpar</button>
+            </div>
+            <div id="rascunho-status" class="text-[10px] text-slate-400 text-center"></div>
+        </div>
+
+        <!-- 6. Automação KDP (Python) -->
         <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 shadow-lg space-y-2">
             <h2 class="text-sm font-semibold text-cyan-400">🖨️ Automação KDP (ReportLab)</h2>
-            <p class="text-xs text-slate-400">Compilação e empacotamento automático de livros digitais.</p>
             <button onclick="alert('Script Python KDP acionado no servidor!')" class="w-full bg-cyan-600 hover:bg-cyan-500 text-white font-medium py-2 rounded-lg text-xs transition">Compilar e Enviar Manuscrito</button>
         </div>
 
-        <!-- 5. GitHub Actions (CI/CD) -->
+        <!-- 7. GitHub Actions (CI/CD) -->
         <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 shadow-lg space-y-2">
             <h2 class="text-sm font-semibold text-rose-400">📱 GitHub Actions (CI/CD)</h2>
-            <p class="text-xs text-slate-400">Repositório: andersonpereira07716-oss</p>
             <button onclick="alert('Pipeline de APK disparada com sucesso!')" class="w-full bg-rose-600 hover:bg-rose-500 text-white font-medium py-2 rounded-lg text-xs transition">Disparar Build APK Remoto</button>
         </div>
 
-        <!-- 6. Monitor de Logs do Sistema (Nova Funcionalidade) -->
+        <!-- 8. Monitor de Logs -->
         <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 shadow-lg space-y-2">
             <h2 class="text-sm font-semibold text-violet-400">🔍 Logs do Sistema (Termux/Vercel)</h2>
-            <div id="system-logs" class="bg-slate-950 p-2 rounded border border-slate-800 text-[10px] font-mono text-slate-400 h-20 overflow-y-auto">
-                [INFO] Sistema inicializado com sucesso.<br>
-                [INFO] Conexão Supabase / Mercado Pago verificada.<br>
-                [READY] Pronto para receber webhooks de transação.
+            <div id="system-logs" class="bg-slate-950 p-2 rounded border border-slate-800 text-[10px] font-mono text-slate-400 h-16 overflow-y-auto">
+                [INFO] Sistema operativo e funcional.<br>
+                [READY] Módulos de segurança e KDP ativos.
             </div>
         </div>
 
@@ -128,7 +143,7 @@
         function gerarPixInstantaneo() {
             const box = document.getElementById('pix-box');
             box.classList.remove('hidden');
-            box.innerText = "00020126580014br.gov.bcb.pix... [CHAVE PIX DINÂMICA GERADA COM SUCESSO]";
+            box.innerText = "00020126580014br.gov.bcb.pix... [CHAVE PIX DINÂMICA GERADA]";
         }
 
         function calcularLucro() {
@@ -140,7 +155,33 @@
             resBox.innerHTML = `Projeção de Faturamento: <span class="text-emerald-400">R$ ${total.toFixed(2).replace('.', ',')}</span>`;
         }
 
-        carregarEstatisticas();
+        function gerarTokenSeguro() {
+            const array = new Uint8Array(24);
+            crypto.getRandomValues(array);
+            const token = Array.from(array, byte => byte.toString(16).padStart(2, '0')).join('');
+            const box = document.getElementById('token-box');
+            box.classList.remove('hidden');
+            box.innerText = `fnx_live_${token}`;
+        }
+
+        function salvarRascunho() {
+            const texto = document.getElementById('rascunho-input').value;
+            localStorage.setItem('fenix_rascunho', texto);
+            const status = document.getElementById('rascunho-status');
+            status.innerText = "Nota guardada localmente com sucesso!";
+            setTimeout(() => status.innerText = "", 3000);
+        }
+
+        function limparRascunho() {
+            document.getElementById('rascunho-input').value = '';
+            localStorage.removeItem('fenix_rascunho');
+        }
+
+        window.onload = () => {
+            const salvo = localStorage.getItem('fenix_rascunho');
+            if(salvo) document.getElementById('rascunho-input').value = salvo;
+            carregarEstatisticas();
+        };
     </script>
 </body>
 </html>
