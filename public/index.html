@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Centro de Comando Fênix - Enterprise v3</title>
+    <title>Centro de Comando Fênix - Enterprise v4</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
@@ -14,7 +14,7 @@
         <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 shadow-lg flex justify-between items-center">
             <div>
                 <h1 class="text-lg font-bold text-blue-400">🔥 Fênix Enterprise</h1>
-                <p class="text-xs text-slate-400">Cloud Ecosystem & Hub</p>
+                <p class="text-xs text-slate-400">Cloud Ecosystem & Hub v4</p>
             </div>
             <span class="text-xs bg-emerald-500/10 text-emerald-400 px-2.5 py-1 rounded border border-emerald-500/20 animate-pulse">Online</span>
         </div>
@@ -26,7 +26,18 @@
             <p class="text-xs text-slate-300 text-center font-medium" id="stats-info">A sincronizar estatísticas...</p>
         </div>
 
-        <!-- 1. Checkout Mercado Pago -->
+        <!-- 1. Calculadora de Royalties KDP (Nova!) -->
+        <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 shadow-lg space-y-3">
+            <h2 class="text-sm font-semibold text-orange-400">📚 Calculadora de Royalties KDP</h2>
+            <div class="space-y-2">
+                <input type="number" id="kdp-paginas" placeholder="Número de Páginas" value="120" class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2 text-xs text-slate-200">
+                <input type="number" id="kdp-preco-venda" placeholder="Preço de Venda (R$)" value="39.90" class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2 text-xs text-slate-200">
+                <button onclick="calcularRoyaltiesKDP()" class="w-full bg-orange-600 hover:bg-orange-500 text-white font-medium py-2 rounded-lg text-xs transition">Calcular Lucro por Livro</button>
+                <div id="kdp-resultado" class="hidden text-xs bg-slate-950 p-2.5 rounded border border-slate-800 text-slate-300 space-y-1"></div>
+            </div>
+        </div>
+
+        <!-- 2. Checkout Mercado Pago -->
         <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 shadow-lg space-y-3">
             <h2 class="text-sm font-semibold text-emerald-400">🛒 Checkout Mercado Pago</h2>
             <input type="text" id="produto-nome" value="E-book KDP Avançado" class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2 text-xs text-slate-200">
@@ -34,33 +45,21 @@
             <button onclick="comprarAgora()" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-medium py-2.5 rounded-lg text-xs transition">Gerar Pagamento Real</button>
         </div>
 
-        <!-- 2. Gerador Pix Rápido -->
+        <!-- 3. Gerador Pix Rápido -->
         <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 shadow-lg space-y-2">
             <h2 class="text-sm font-semibold text-teal-400">⚡ Pix Copia e Cola / QR Code</h2>
             <button onclick="gerarPixInstantaneo()" class="w-full bg-teal-600 hover:bg-teal-500 text-white font-medium py-2 rounded-lg text-xs transition">Gerar Chave Pix de Venda</button>
             <div id="pix-box" class="hidden text-xs bg-slate-950 p-2 rounded border border-slate-800 text-teal-300 font-mono break-all"></div>
         </div>
 
-        <!-- 3. Calculadora de Lucro KDP / ROI -->
-        <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 shadow-lg space-y-2">
-            <h2 class="text-sm font-semibold text-amber-400">💰 Calculadora de ROI / KDP</h2>
-            <div class="flex gap-2">
-                <input type="number" id="calc-qtd" value="10" placeholder="Qtd Livros" class="w-1/2 bg-slate-950 border border-slate-800 rounded-lg p-2 text-xs text-slate-200">
-                <input type="number" id="calc-preco" value="49.00" placeholder="Preço Unit." class="w-1/2 bg-slate-950 border border-slate-800 rounded-lg p-2 text-xs text-slate-200">
-            </div>
-            <button onclick="calcularLucro()" class="w-full bg-amber-600 hover:bg-amber-500 text-white font-medium py-2 rounded-lg text-xs transition">Calcular Projeção</button>
-            <div id="calc-resultado" class="text-xs bg-slate-950 p-2 rounded border border-slate-800 text-slate-300 text-center font-bold hidden"></div>
-        </div>
-
-        <!-- 4. NOVO: Gerador de Chaves e Tokens Seguros -->
+        <!-- 4. Gerador de Tokens & Chaves API -->
         <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 shadow-lg space-y-2">
             <h2 class="text-sm font-semibold text-indigo-400">🔑 Gerador de Tokens & Chaves API</h2>
-            <p class="text-xs text-slate-400">Gera hashes criptográficas seguras para integrações.</p>
             <button onclick="gerarTokenSeguro()" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-medium py-2 rounded-lg text-xs transition">Gerar Chave Segura</button>
             <div id="token-box" class="hidden text-xs bg-slate-950 p-2 rounded border border-slate-800 text-indigo-300 font-mono break-all select-all"></div>
         </div>
 
-        <!-- 5. NOVO: Bloco de Notas / Rascunho Rápido -->
+        <!-- 5. Bloco de Notas / Rascunho KDP -->
         <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 shadow-lg space-y-2">
             <h2 class="text-sm font-semibold text-pink-400">📝 Rascunho & Ideias KDP</h2>
             <textarea id="rascunho-input" placeholder="Escreve uma ideia de livro ou notas..." class="w-full h-20 bg-slate-950 border border-slate-800 rounded-lg p-2 text-xs text-slate-200 resize-none"></textarea>
@@ -87,8 +86,8 @@
         <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 shadow-lg space-y-2">
             <h2 class="text-sm font-semibold text-violet-400">🔍 Logs do Sistema (Termux/Vercel)</h2>
             <div id="system-logs" class="bg-slate-950 p-2 rounded border border-slate-800 text-[10px] font-mono text-slate-400 h-16 overflow-y-auto">
-                [INFO] Sistema operativo e funcional.<br>
-                [READY] Módulos de segurança e KDP ativos.
+                [INFO] Sistema operativo e funcional na v4.<br>
+                [READY] Módulos de cálculo e KDP prontos.
             </div>
         </div>
 
@@ -123,6 +122,23 @@
             }
         }
 
+        function calcularRoyaltiesKDP() {
+            const paginas = parseFloat(document.getElementById('kdp-paginas').value) || 0;
+            const preco = parseFloat(document.getElementById('kdp-preco-venda').value) || 0;
+            
+            // Custo fixo base Amazon KDP (exemplo p/ livro impresso preto e branco padrão)
+            const custoImpressao = 2.25 + (paginas * 0.05);
+            const royaltyBruto = (preco * 0.60) - custoImpressao;
+            const lucroFinal = royaltyBruto > 0 ? royaltyBruto : 0;
+            
+            const resBox = document.getElementById('kdp-resultado');
+            resBox.classList.remove('hidden');
+            resBox.innerHTML = `
+                <div>Custo Est. Impressão: <span class="text-rose-400">R$ ${custoImpressao.toFixed(2).replace('.', ',')}</span></div>
+                <div>Royalties Estimados (60%): <span class="text-emerald-400 font-bold">R$ ${lucroFinal.toFixed(2).replace('.', ',')} / un</span></div>
+            `;
+        }
+
         async function comprarAgora() {
             const titulo = document.getElementById('produto-nome').value;
             const preco = document.getElementById('produto-preco').value;
@@ -144,15 +160,6 @@
             const box = document.getElementById('pix-box');
             box.classList.remove('hidden');
             box.innerText = "00020126580014br.gov.bcb.pix... [CHAVE PIX DINÂMICA GERADA]";
-        }
-
-        function calcularLucro() {
-            const qtd = parseFloat(document.getElementById('calc-qtd').value) || 0;
-            const preco = parseFloat(document.getElementById('calc-preco').value) || 0;
-            const total = qtd * preco;
-            const resBox = document.getElementById('calc-resultado');
-            resBox.classList.remove('hidden');
-            resBox.innerHTML = `Projeção de Faturamento: <span class="text-emerald-400">R$ ${total.toFixed(2).replace('.', ',')}</span>`;
         }
 
         function gerarTokenSeguro() {
