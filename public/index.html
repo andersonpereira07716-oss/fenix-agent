@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Centro de Comando Fênix - Enterprise v5</title>
+    <title>Centro de Comando Fênix - Enterprise v6</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
@@ -14,7 +14,7 @@
         <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 shadow-lg flex justify-between items-center">
             <div>
                 <h1 class="text-lg font-bold text-blue-400">🔥 Fênix Enterprise</h1>
-                <p class="text-xs text-slate-400">Cloud Ecosystem & Hub v5</p>
+                <p class="text-xs text-slate-400">Cloud Ecosystem & Hub v6</p>
             </div>
             <span class="text-xs bg-emerald-500/10 text-emerald-400 px-2.5 py-1 rounded border border-emerald-500/20 animate-pulse">Online</span>
         </div>
@@ -26,44 +26,43 @@
             <p class="text-xs text-slate-300 text-center font-medium" id="stats-info">A sincronizar estatísticas...</p>
         </div>
 
-        <!-- 1. Simulador de Câmbio KDP (USD -> BRL) - NOVO! -->
-        <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 shadow-lg space-y-3">
-            <h2 class="text-sm font-semibold text-emerald-400">💵 Conversor KDP (USD para BRL)</h2>
-            <div class="space-y-2">
-                <input type="number" id="kdp-usd" placeholder="Royalties em Dólar (USD)" value="150" class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2 text-xs text-slate-200">
-                <input type="number" id="kdp-cotacao" placeholder="Cotação Atual do Dólar (R$)" value="5.50" class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2 text-xs text-slate-200">
-                <button onclick="converterDolar()" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-medium py-2 rounded-lg text-xs transition">Calcular Conversão em Reais</button>
-                <div id="kdp-cambio-resultado" class="hidden text-xs bg-slate-950 p-2.5 rounded border border-slate-800 text-slate-300 font-medium"></div>
+        <!-- 1. NOVO: Monitor PM2 / Termux -->
+        <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 shadow-lg space-y-2">
+            <h2 class="text-sm font-semibold text-violet-400">⚡ Monitor de Processos (Termux/PM2)</h2>
+            <div id="pm2-container" class="space-y-1.5 text-xs">
+                <div class="bg-slate-950 p-2 rounded border border-slate-800 text-slate-400">A carregar processos...</div>
             </div>
+            <button onclick="carregarPM2()" class="w-full bg-violet-600 hover:bg-violet-500 text-white font-medium py-1.5 rounded-lg text-xs transition">Atualizar Status de Servidores</button>
         </div>
 
-        <!-- 2. Calculadora de Royalties KDP -->
+        <!-- 2. NOVO: Assistente IA / Gemini Integrado -->
         <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 shadow-lg space-y-3">
-            <h2 class="text-sm font-semibold text-orange-400">📚 Calculadora de Custos KDP</h2>
-            <div class="space-y-2">
-                <input type="number" id="kdp-paginas" placeholder="Número de Páginas" value="120" class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2 text-xs text-slate-200">
-                <input type="number" id="kdp-preco-venda" placeholder="Preço de Venda (R$)" value="39.90" class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2 text-xs text-slate-200">
-                <button onclick="calcularRoyaltiesKDP()" class="w-full bg-orange-600 hover:bg-orange-500 text-white font-medium py-2 rounded-lg text-xs transition">Calcular Lucro por Livro</button>
-                <div id="kdp-resultado" class="hidden text-xs bg-slate-950 p-2.5 rounded border border-slate-800 text-slate-300 space-y-1"></div>
-            </div>
-        </div>
-
-        <!-- 3. Gestor de Tarefas do Projeto - NOVO! -->
-        <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 shadow-lg space-y-3">
-            <h2 class="text-sm font-semibold text-purple-400">📋 Roadmap & Tarefas</h2>
+            <h2 class="text-sm font-semibold text-cyan-400">🤖 Assistente IA & Marketing KDP</h2>
+            <input type="text" id="ia-prompt" placeholder="Ex: Ideias de capítulos para livro de ficção..." class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2 text-xs text-slate-200">
             <div class="flex gap-2">
-                <input type="text" id="nova-tarefa" placeholder="Nova tarefa (ex: Publicar e-book)..." class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2 text-xs text-slate-200">
-                <button onclick="adicionarTarefa()" class="bg-purple-600 hover:bg-purple-500 text-white px-3 py-2 rounded-lg text-xs font-medium transition">+</button>
+                <button onclick="executarIA('conteudo')" class="w-1/2 bg-cyan-600 hover:bg-cyan-500 text-white font-medium py-1.5 rounded-lg text-xs transition">Gerar Ideias</button>
+                <button onclick="executarIA('marketing')" class="w-1/2 bg-teal-600 hover:bg-teal-500 text-white font-medium py-1.5 rounded-lg text-xs transition">Estratégia Vendas</button>
             </div>
-            <div id="lista-tarefas" class="space-y-1.5 max-h-36 overflow-y-auto"></div>
+            <div id="ia-resultado" class="hidden text-xs bg-slate-950 p-2.5 rounded border border-slate-800 text-slate-300 whitespace-pre-line leading-relaxed max-h-40 overflow-y-auto"></div>
+        </div>
+
+        <!-- 3. NOVO: Editor Markdown Pro com Pré-visualização -->
+        <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 shadow-lg space-y-3">
+            <h2 class="text-sm font-semibold text-pink-400">📝 Editor Markdown & Notas KDP</h2>
+            <textarea id="markdown-input" placeholder="# Título do Capítulo&#10;Escreve em Markdown aqui..." class="w-full h-24 bg-slate-950 border border-slate-800 rounded-lg p-2 text-xs text-slate-200 resize-none font-mono"></textarea>
+            <div class="flex gap-2">
+                <button onclick="salvarMarkdown()" class="w-1/2 bg-pink-600 hover:bg-pink-500 text-white font-medium py-1.5 rounded-lg text-xs transition">Salvar Nota</button>
+                <button onclick="alternarPreview()" class="w-1/2 bg-slate-800 hover:bg-slate-700 text-slate-300 font-medium py-1.5 rounded-lg text-xs transition">Pré-visualizar</button>
+            </div>
+            <div id="markdown-preview" class="hidden text-xs bg-slate-950 p-2.5 rounded border border-slate-800 text-slate-300 space-y-1 font-sans"></div>
         </div>
 
         <!-- 4. Checkout Mercado Pago -->
         <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 shadow-lg space-y-3">
-            <h2 class="text-sm font-semibold text-teal-400">🛒 Checkout Mercado Pago</h2>
+            <h2 class="text-sm font-semibold text-emerald-400">🛒 Checkout Mercado Pago</h2>
             <input type="text" id="produto-nome" value="E-book KDP Avançado" class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2 text-xs text-slate-200">
             <input type="number" id="produto-preco" value="49.00" class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2 text-xs text-slate-200">
-            <button onclick="comprarAgora()" class="w-full bg-teal-600 hover:bg-teal-500 text-white font-medium py-2.5 rounded-lg text-xs transition">Gerar Pagamento Real</button>
+            <button onclick="comprarAgora()" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-medium py-2.5 rounded-lg text-xs transition">Gerar Pagamento Real</button>
         </div>
 
         <!-- 5. Gerador de Tokens & Chaves API -->
@@ -71,26 +70,6 @@
             <h2 class="text-sm font-semibold text-indigo-400">🔑 Gerador de Tokens & Chaves API</h2>
             <button onclick="gerarTokenSeguro()" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-medium py-2 rounded-lg text-xs transition">Gerar Chave Segura</button>
             <div id="token-box" class="hidden text-xs bg-slate-950 p-2 rounded border border-slate-800 text-indigo-300 font-mono break-all select-all"></div>
-        </div>
-
-        <!-- 6. Bloco de Notas / Rascunho KDP -->
-        <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 shadow-lg space-y-2">
-            <h2 class="text-sm font-semibold text-pink-400">📝 Rascunho & Ideias KDP</h2>
-            <textarea id="rascunho-input" placeholder="Escreve uma ideia de livro ou notas..." class="w-full h-20 bg-slate-950 border border-slate-800 rounded-lg p-2 text-xs text-slate-200 resize-none"></textarea>
-            <div class="flex gap-2">
-                <button onclick="salvarRascunho()" class="w-1/2 bg-pink-600 hover:bg-pink-500 text-white font-medium py-1.5 rounded-lg text-xs transition">Salvar Nota</button>
-                <button onclick="limparRascunho()" class="w-1/2 bg-slate-800 hover:bg-slate-700 text-slate-300 font-medium py-1.5 rounded-lg text-xs transition">Limpar</button>
-            </div>
-            <div id="rascunho-status" class="text-[10px] text-slate-400 text-center"></div>
-        </div>
-
-        <!-- 7. Monitor de Logs -->
-        <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 shadow-lg space-y-2">
-            <h2 class="text-sm font-semibold text-violet-400">🔍 Logs do Sistema (Termux/Vercel)</h2>
-            <div id="system-logs" class="bg-slate-950 p-2 rounded border border-slate-800 text-[10px] font-mono text-slate-400 h-16 overflow-y-auto">
-                [INFO] Sistema atualizado para v5 com sucesso.<br>
-                [READY] Módulos de câmbio e tarefas ativos.
-            </div>
         </div>
 
     </div>
@@ -119,62 +98,71 @@
                 document.getElementById('stats-info').innerHTML = `Hoje: <span class="text-amber-400">${data.vendasHoje || 0} vendas</span> | Total: <span class="text-emerald-400">R$ ${totalFormatado}</span>`;
                 initChart(data.vendasHoje || 0);
             } catch (e) {
-                document.getElementById('stats-info').innerText = "Modo autónomo ativo (Simulação).";
+                document.getElementById('stats-info').innerText = "Modo autónomo ativo.";
                 initChart(4);
             }
         }
 
-        function converterDolar() {
-            const usd = parseFloat(document.getElementById('kdp-usd').value) || 0;
-            const cotacao = parseFloat(document.getElementById('kdp-cotacao').value) || 0;
-            const totalBrl = usd * cotacao;
-            const resBox = document.getElementById('kdp-cambio-resultado');
-            resBox.classList.remove('hidden');
-            resBox.innerHTML = `Total Convertido: <span class="text-emerald-400 font-bold">R$ ${totalBrl.toFixed(2).replace('.', ',')}</span>`;
-        }
-
-        function calcularRoyaltiesKDP() {
-            const paginas = parseFloat(document.getElementById('kdp-paginas').value) || 0;
-            const preco = parseFloat(document.getElementById('kdp-preco-venda').value) || 0;
-            const custoImpressao = 2.25 + (paginas * 0.05);
-            const royaltyBruto = (preco * 0.60) - custoImpressao;
-            const lucroFinal = royaltyBruto > 0 ? royaltyBruto : 0;
-            
-            const resBox = document.getElementById('kdp-resultado');
-            resBox.classList.remove('hidden');
-            resBox.innerHTML = `
-                <div>Custo Est. Impressão: <span class="text-rose-400">R$ ${custoImpressao.toFixed(2).replace('.', ',')}</span></div>
-                <div>Royalties Estimados (60%): <span class="text-emerald-400 font-bold">R$ ${lucroFinal.toFixed(2).replace('.', ',')} / un</span></div>
-            `;
-        }
-
-        // Tarefas (Roadmap)
-        let tarefas = JSON.parse(localStorage.getItem('fenix_tarefas') || '["Publicar Livro 1 na KDP", "Configurar Webhook Supabase"]');
-
-        function renderizarTarefas() {
-            const container = document.getElementById('lista-tarefas');
-            container.innerHTML = '';
-            tarefas.forEach((t, index) => {
-                const div = document.createElement('div');
-                div.className = "flex justify-between items-center bg-slate-950 p-2 rounded border border-slate-800 text-xs text-slate-300";
-                div.innerHTML = `<span>🔹 ${t}</span> <button onclick="removerTarefa(${index})" class="text-rose-400 hover:text-rose-300 font-bold px-1">×</button>`;
-                container.appendChild(div);
-            });
-            localStorage.setItem('fenix_tarefas', JSON.stringify(tarefas));
-        }
-
-        function adicionarTarefa() {
-            const input = document.getElementById('nova-tarefa');
-            if(input.value.trim() !== '') {
-                tarefas.push(input.value.trim());
-                input.value = '';
-                renderizarTarefas();
+        async function carregarPM2() {
+            const container = document.getElementById('pm2-container');
+            container.innerHTML = `<div class="bg-slate-950 p-2 rounded border border-slate-800 text-slate-400">A verificar processos...</div>`;
+            try {
+                const res = await fetch('/api/pm2/status');
+                const data = await res.json();
+                container.innerHTML = '';
+                data.processes.forEach(p => {
+                    const div = document.createElement('div');
+                    div.className = "flex justify-between items-center bg-slate-950 p-2 rounded border border-slate-800 text-slate-300";
+                    div.innerHTML = `<span>🟢 ${p.name}</span> <span class="text-[10px] text-violet-400">Mem: ${p.memory} | CPU: ${p.cpu}</span>`;
+                    container.appendChild(div);
+                });
+            } catch (e) {
+                container.innerHTML = `<div class="bg-slate-950 p-2 rounded border border-slate-800 text-rose-400">Erro ao carregar processos PM2.</div>`;
             }
         }
 
-        function removerTarefa(index) {
-            tarefas.splice(index, 1);
-            renderizarTarefas();
+        async function executarIA(acao) {
+            const prompt = document.getElementById('ia-prompt').value;
+            const resBox = document.getElementById('ia-resultado');
+            if (!prompt) {
+                alert("Escreve um tópico para a IA.");
+                return;
+            }
+            resBox.classList.remove('hidden');
+            resBox.innerText = "A consultar inteligência artificial...";
+            try {
+                const res = await fetch('/api/ia/processar', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ prompt, acao })
+                });
+                const data = await res.json();
+                resBox.innerText = data.resultado;
+            } catch (e) {
+                resBox.innerText = "Erro ao comunicar com o serviço de IA.";
+            }
+        }
+
+        function salvarMarkdown() {
+            const texto = document.getElementById('markdown-input').value;
+            localStorage.setItem('fenix_markdown', texto);
+            alert("Nota Markdown guardada com sucesso!");
+        }
+
+        function alternarPreview() {
+            const preview = document.getElementById('markdown-preview');
+            const input = document.getElementById('markdown-input');
+            preview.classList.toggle('hidden');
+            if (!preview.classList.contains('hidden')) {
+                // Simples conversor visual de Markdown para HTML básico
+                let html = input.value
+                    .replace(/^# (.*$)/gm, '<h1 class="text-sm font-bold text-pink-400">$1</h1>')
+                    .replace(/^## (.*$)/gm, '<h2 class="text-xs font-bold text-pink-300">$1</h2>')
+                    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+                    .replace(/\*(.*?)\*/g, '<em>$1</em>')
+                    .replace(/\n/g, '<br>');
+                preview.innerHTML = html || "<em>Sem conteúdo para visualizar.</em>";
+            }
         }
 
         async function comprarAgora() {
@@ -203,24 +191,11 @@
             box.innerText = `fnx_live_${token}`;
         }
 
-        function salvarRascunho() {
-            const texto = document.getElementById('rascunho-input').value;
-            localStorage.setItem('fenix_rascunho', texto);
-            const status = document.getElementById('rascunho-status');
-            status.innerText = "Nota guardada localmente com sucesso!";
-            setTimeout(() => status.innerText = "", 3000);
-        }
-
-        function limparRascunho() {
-            document.getElementById('rascunho-input').value = '';
-            localStorage.removeItem('fenix_rascunho');
-        }
-
         window.onload = () => {
-            const salvo = localStorage.getItem('fenix_rascunho');
-            if(salvo) document.getElementById('rascunho-input').value = salvo;
-            renderizarTarefas();
+            const salvo = localStorage.getItem('fenix_markdown');
+            if(salvo) document.getElementById('markdown-input').value = salvo;
             carregarEstatisticas();
+            carregarPM2();
         };
     </script>
 </body>
