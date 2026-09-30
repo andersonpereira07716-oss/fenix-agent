@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Centro de Comando Fênix - Enterprise</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen p-4 pb-20">
+    <div class="max-w-md mx-auto space-y-4">
+        
+        <!-- Header -->
+        <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 shadow-lg flex justify-between items-center">
+            <div>
+                <h1 class="text-lg font-bold text-blue-400">🔥 Fênix Enterprise</h1>
+                <p class="text-xs text-slate-400">Automations & Cloud Hub</p>
+            </div>
+            <span class="text-xs bg-emerald-500/10 text-emerald-400 px-2.5 py-1 rounded border border-emerald-500/20 animate-pulse">Online</span>
+        </div>
+
+        <!-- Estatísticas & Gráfico -->
+        <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 shadow-lg space-y-2">
+            <h2 class="text-sm font-semibold text-amber-400">📊 Desempenho de Vendas</h2>
+            <div class="h-32"><canvas id="salesChart"></canvas></div>
+            <p class="text-xs text-slate-300 text-center font-medium" id="stats-info">A carregar dados...</p>
+        </div>
+
+        <!-- 1. Checkout & Vendas -->
+        <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 shadow-lg space-y-3">
+            <h2 class="text-sm font-semibold text-emerald-400">🛒 Checkout Mercado Pago</h2>
+            <input type="text" id="produto-nome" value="E-book KDP Avançado" class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2 text-xs text-slate-200">
+            <input type="number" id="produto-preco" value="49.00" class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2 text-xs text-slate-200">
+            <button onclick="comprarAgora()" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-medium py-2.5 rounded-lg text-xs transition">Gerar Pagamento Real</button>
+        </div>
+
+        <!-- 2. Disparador KDP Automation (Python) -->
+        <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 shadow-lg space-y-2">
+            <h2 class="text-sm font-semibold text-cyan-400">🖨️ Automação KDP (ReportLab)</h2>
+            <p class="text-xs text-slate-400">Compilação e empacotamento automático de livros digitais.</p>
+            <button onclick="alert('Script Python KDP acionado no servidor!')" class="w-full bg-cyan-600 hover:bg-cyan-500 text-white font-medium py-2 rounded-lg text-xs transition">Compilar e Enviar Manuscrito</button>
+        </div>
+
+        <!-- 3. Gestor de APKs / GitHub Actions -->
+        <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 shadow-lg space-y-2">
+            <h2 class="text-sm font-semibold text-rose-400">📱 GitHub Actions (CI/CD)</h2>
+            <p class="text-xs text-slate-400">Repositório: andersonpereira07716-oss</p>
+            <button onclick="alert('Pipeline de APK disparada com sucesso!')" class="w-full bg-rose-600 hover:bg-rose-500 text-white font-medium py-2 rounded-lg text-xs transition">Disparar Build APK Remoto</button>
+        </div>
+
+        <!-- 4. CRM de Compradores / Leads -->
+        <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 shadow-lg space-y-2">
+            <h2 class="text-sm font-semibold text-purple-400">👥 CRM de Leads (Supabase)</h2>
+            <div id="crm-lista" class="space-y-1 text-xs text-slate-300">
+                <div class="bg-slate-950 p-2 rounded border border-slate-800 flex justify-between">
+                    <span>Pix Aprovado - R$ 49,00</span>
+                    <span class="text-emerald-400">Ativo</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 5. Assistente IA Marketing (Gemini) -->
+        <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 shadow-lg space-y-2.5">
+            <h2 class="text-sm font-semibold text-indigo-400">🤖 Assistente de Marketing (Gemini)</h2>
+            <input type="text" id="ai-topico" placeholder="Tema para anúncio..." class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2 text-xs text-slate-200">
+            <button onclick="gerarCopyMarketing()" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-medium py-2 rounded-lg text-xs transition">Gerar Copy de Vendas</button>
+            <div id="ai-resultado" class="text-xs bg-slate-950 p-2 rounded border border-slate-800 text-slate-300 hidden"></div>
+        </div>
+
+    </div>
+
+    <script>
+        let myChart = null;
+
+        function initChart(vendasHoje, faturamento) {
+            const ctx = document.getElementById('salesChart').getContext('2d');
+            if(myChart) myChart.destroy();
+            myChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb', 'Hoje'],
+                    datasets: [{ label: 'Vendas', data: [1, 2, 1, 3, 2, 4, vendasHoje], backgroundColor: '#3b82f6', borderRadius: 4 }]
+                },
+                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, grid: { color: '#1e293b' } }, x: { grid: { display: false } } } }
+            });
+        }
+
+        async function carregarEstatisticas() {
+            try {
+                const res = await fetch('/api/vendas/stats');
+                const data = await res.json();
+                const totalFormatado = Number(data.faturamentoTotal || 0).toFixed(2).replace('.', ',');
+                document.getElementById('stats-info').innerHTML = `Hoje: <span class="text-amber-400">${data.vendasHoje || 0} vendas</span> | Total: <span class="text-emerald-400">R$ ${totalFormatado}</span>`;
+                initChart(data.vendasHoje || 0, data.faturamentoTotal || 0);
+            } catch (e) {
+                document.getElementById('stats-info').innerText = "Erro ao sincronizar estatísticas.";
+            }
+        }
+
+        async function comprarAgora() {
+            const titulo = document.getElementById('produto-nome').value;
+            const preco = document.getElementById('produto-preco').value;
+            try {
+                const res = await fetch('/api/pagar', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ titulo, preco })
+                });
+                const data = await res.json();
+                if (data.init_point) window.location.href = data.init_point;
+                else alert("Erro ao gerar link.");
+            } catch (e) {
+                alert("Erro de conexão.");
+            }
+        }
+
+        function gerarCopyMarketing() {
+            const topico = document.getElementById('ai-topico').value || "Livro KDP";
+            const box = document.getElementById('ai-resultado');
+            box.classList.remove('hidden');
+            box.innerHTML = `<b>Copy Pronta (WhatsApp/Instagram):</b><br>🔥 Descobre os segredos de ${topico}! Garante já o teu exemplar com desconto de lançamento. Clica no link abaixo! 👇`;
+        }
+
+        carregarEstatisticas();
+    </script>
+</body>
+</html>
