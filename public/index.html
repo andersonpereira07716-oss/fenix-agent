@@ -3,7 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Centro de Comando Fênix - Enterprise v7</title>
+    <title>Centro de Comando Fênix - Enterprise PWA</title>
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#020617">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/785/785116.png">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
@@ -14,9 +19,9 @@
         <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 shadow-lg flex justify-between items-center">
             <div>
                 <h1 class="text-lg font-bold text-blue-400">🔥 Fênix Enterprise</h1>
-                <p class="text-xs text-slate-400">Cloud Ecosystem & Hub v7</p>
+                <p class="text-xs text-slate-400">Cloud Ecosystem & Hub PWA</p>
             </div>
-            <span class="text-xs bg-emerald-500/10 text-emerald-400 px-2.5 py-1 rounded border border-emerald-500/20 animate-pulse">Online</span>
+            <span class="text-xs bg-emerald-500/10 text-emerald-400 px-2.5 py-1 rounded border border-emerald-500/20 animate-pulse">PWA Ready</span>
         </div>
 
         <!-- Estatísticas & Gráfico -->
@@ -26,7 +31,7 @@
             <p class="text-xs text-slate-300 text-center font-medium" id="stats-info">A sincronizar estatísticas...</p>
         </div>
 
-        <!-- 1. NOVO: Verificador de Saúde das APIs & Servidores (Health Check) -->
+        <!-- Health Check -->
         <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 shadow-lg space-y-2">
             <h2 class="text-sm font-semibold text-emerald-400">🌐 Health Check de APIs & Tunnels</h2>
             <div id="health-container" class="space-y-1 text-xs">
@@ -40,7 +45,7 @@
             <button onclick="verificarHealth()" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-medium py-1.5 rounded-lg text-xs transition">Testar Conexões Remotas</button>
         </div>
 
-        <!-- 2. NOVO: Simulador de Taxas Mercado Pago & Líquido Pix -->
+        <!-- Calculadora Taxas MP -->
         <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 shadow-lg space-y-3">
             <h2 class="text-sm font-semibold text-amber-400">🧮 Calculadora de Margem & Taxas MP</h2>
             <div class="space-y-2">
@@ -55,7 +60,7 @@
             </div>
         </div>
 
-        <!-- 3. NOVO: Gerador de Links & Mensagens WhatsApp Comercial -->
+        <!-- WhatsApp Cobrança -->
         <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 shadow-lg space-y-3">
             <h2 class="text-sm font-semibold text-green-400">💬 Gerador de Cobrança WhatsApp</h2>
             <input type="text" id="wsp-cliente" placeholder="Telefone do Cliente (ex: 5583999999999)" class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2 text-xs text-slate-200">
@@ -63,7 +68,7 @@
             <button onclick="gerarLinkWhats()" class="w-full bg-green-600 hover:bg-green-500 text-white font-medium py-2 rounded-lg text-xs transition">Enviar Cobrança via WhatsApp</button>
         </div>
 
-        <!-- 4. Monitor PM2 / Termux -->
+        <!-- Monitor PM2 / Termux -->
         <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 shadow-lg space-y-2">
             <h2 class="text-sm font-semibold text-violet-400">⚡ Monitor de Processos (Termux/PM2)</h2>
             <div id="pm2-container" class="space-y-1.5 text-xs">
@@ -72,7 +77,7 @@
             <button onclick="carregarPM2()" class="w-full bg-violet-600 hover:bg-violet-500 text-white font-medium py-1.5 rounded-lg text-xs transition">Atualizar Status de Servidores</button>
         </div>
 
-        <!-- 5. Assistente IA / Gemini Integrado -->
+        <!-- Assistente IA -->
         <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 shadow-lg space-y-3">
             <h2 class="text-sm font-semibold text-cyan-400">🤖 Assistente IA & Marketing KDP</h2>
             <input type="text" id="ia-prompt" placeholder="Ex: Ideias de capítulos para livro de ficção..." class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2 text-xs text-slate-200">
@@ -83,7 +88,7 @@
             <div id="ia-resultado" class="hidden text-xs bg-slate-950 p-2.5 rounded border border-slate-800 text-slate-300 whitespace-pre-line leading-relaxed max-h-40 overflow-y-auto"></div>
         </div>
 
-        <!-- 6. Editor Markdown Pro -->
+        <!-- Editor Markdown Pro -->
         <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 shadow-lg space-y-3">
             <h2 class="text-sm font-semibold text-pink-400">📝 Editor Markdown & Notas KDP</h2>
             <textarea id="markdown-input" placeholder="# Título do Capítulo&#10;Escreve em Markdown aqui..." class="w-full h-24 bg-slate-950 border border-slate-800 rounded-lg p-2 text-xs text-slate-200 resize-none font-mono"></textarea>
@@ -97,6 +102,13 @@
     </div>
 
     <script>
+        // Registar o Service Worker para PWA
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js').catch(err => console.log('SW error:', err));
+            });
+        }
+
         let myChart = null;
 
         function initChart(vendasHoje) {
@@ -129,7 +141,6 @@
             const liquido = parseFloat(document.getElementById('valor-liquido').value) || 0;
             const taxaPct = parseFloat(document.getElementById('tipo-taxa').value) || 0;
             const cobraturaSugerida = liquido / (1 - (taxaPct / 100));
-            
             const resBox = document.getElementById('taxas-resultado');
             resBox.classList.remove('hidden');
             resBox.innerHTML = `
