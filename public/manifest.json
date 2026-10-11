@@ -1,21 +1,22 @@
 {
-  "name": "Fenix Enterprise Cloud",
+  "name": "Fenix Enterprise",
   "short_name": "Fenix",
   "description": "Cloud Ecosystem & Command Center para automação, KDP e gestão de vendas.",
   "start_url": "/",
+  "scope": "/",
   "display": "standalone",
   "background_color": "#020617",
   "theme_color": "#020617",
   "orientation": "portrait",
   "icons": [
     {
-      "src": "/icon-192.png",
+      "src": "https://images.weserv.nl/?url=raw.githubusercontent.com/andersonpereira07716-oss/fenix-agent/main/fenix-app/public/icon-512.png&w=192&h=192&fit=cover",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any maskable"
     },
     {
-      "src": "/icon-512.png",
+      "src": "https://images.weserv.nl/?url=raw.githubusercontent.com/andersonpereira07716-oss/fenix-agent/main/fenix-app/public/icon-512.png&w=512&h=512&fit=cover",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"
