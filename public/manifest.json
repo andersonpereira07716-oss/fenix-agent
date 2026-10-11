@@ -1,4 +1,5 @@
 {
+  "id": "fenix-enterprise-pwa-v1",
   "name": "Fenix Enterprise Cloud",
   "short_name": "Fenix",
   "description": "Cloud Ecosystem & Command Center para automação, KDP e gestão de vendas.",
@@ -20,6 +21,22 @@
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "Fenix Command Center"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "Fenix Mobile"
     }
   ]
 }
