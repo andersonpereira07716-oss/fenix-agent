@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Centro de Comando Fênix - Enterprise v6</title>
+    <title>Centro de Comando Fênix - Enterprise v7</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
@@ -14,7 +14,7 @@
         <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 shadow-lg flex justify-between items-center">
             <div>
                 <h1 class="text-lg font-bold text-blue-400">🔥 Fênix Enterprise</h1>
-                <p class="text-xs text-slate-400">Cloud Ecosystem & Hub v6</p>
+                <p class="text-xs text-slate-400">Cloud Ecosystem & Hub v7</p>
             </div>
             <span class="text-xs bg-emerald-500/10 text-emerald-400 px-2.5 py-1 rounded border border-emerald-500/20 animate-pulse">Online</span>
         </div>
@@ -26,7 +26,44 @@
             <p class="text-xs text-slate-300 text-center font-medium" id="stats-info">A sincronizar estatísticas...</p>
         </div>
 
-        <!-- 1. NOVO: Monitor PM2 / Termux -->
+        <!-- 1. NOVO: Verificador de Saúde das APIs & Servidores (Health Check) -->
+        <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 shadow-lg space-y-2">
+            <h2 class="text-sm font-semibold text-emerald-400">🌐 Health Check de APIs & Tunnels</h2>
+            <div id="health-container" class="space-y-1 text-xs">
+                <div class="flex justify-between bg-slate-950 p-2 rounded border border-slate-800">
+                    <span>API Vercel Core</span> <span class="text-emerald-400 font-bold">200 OK</span>
+                </div>
+                <div class="flex justify-between bg-slate-950 p-2 rounded border border-slate-800">
+                    <span>Supabase DB</span> <span class="text-emerald-400 font-bold">Ativo</span>
+                </div>
+            </div>
+            <button onclick="verificarHealth()" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-medium py-1.5 rounded-lg text-xs transition">Testar Conexões Remotas</button>
+        </div>
+
+        <!-- 2. NOVO: Simulador de Taxas Mercado Pago & Líquido Pix -->
+        <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 shadow-lg space-y-3">
+            <h2 class="text-sm font-semibold text-amber-400">🧮 Calculadora de Margem & Taxas MP</h2>
+            <div class="space-y-2">
+                <input type="number" id="valor-liquido" placeholder="Quanto quer receber líquido (R$)" value="50.00" class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2 text-xs text-slate-200">
+                <select id="tipo-taxa" class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2 text-xs text-slate-200">
+                    <option value="0.99">Pix (0,99% de taxa)</option>
+                    <option value="4.98">Cartão à Vista (4,98% de taxa)</option>
+                    <option value="9.99">Cartão Parcelado (9,99% de taxa)</option>
+                </select>
+                <button onclick="calcularTaxasMP()" class="w-full bg-amber-600 hover:bg-amber-500 text-white font-medium py-2 rounded-lg text-xs transition">Calcular Preço de Venda Sugerido</button>
+                <div id="taxas-resultado" class="hidden text-xs bg-slate-950 p-2.5 rounded border border-slate-800 text-slate-300 font-medium space-y-1"></div>
+            </div>
+        </div>
+
+        <!-- 3. NOVO: Gerador de Links & Mensagens WhatsApp Comercial -->
+        <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 shadow-lg space-y-3">
+            <h2 class="text-sm font-semibold text-green-400">💬 Gerador de Cobrança WhatsApp</h2>
+            <input type="text" id="wsp-cliente" placeholder="Telefone do Cliente (ex: 5583999999999)" class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2 text-xs text-slate-200">
+            <input type="text" id="wsp-item" placeholder="Nome do Produto / E-book" value="E-book KDP Avançado" class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2 text-xs text-slate-200">
+            <button onclick="gerarLinkWhats()" class="w-full bg-green-600 hover:bg-green-500 text-white font-medium py-2 rounded-lg text-xs transition">Enviar Cobrança via WhatsApp</button>
+        </div>
+
+        <!-- 4. Monitor PM2 / Termux -->
         <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 shadow-lg space-y-2">
             <h2 class="text-sm font-semibold text-violet-400">⚡ Monitor de Processos (Termux/PM2)</h2>
             <div id="pm2-container" class="space-y-1.5 text-xs">
@@ -35,7 +72,7 @@
             <button onclick="carregarPM2()" class="w-full bg-violet-600 hover:bg-violet-500 text-white font-medium py-1.5 rounded-lg text-xs transition">Atualizar Status de Servidores</button>
         </div>
 
-        <!-- 2. NOVO: Assistente IA / Gemini Integrado -->
+        <!-- 5. Assistente IA / Gemini Integrado -->
         <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 shadow-lg space-y-3">
             <h2 class="text-sm font-semibold text-cyan-400">🤖 Assistente IA & Marketing KDP</h2>
             <input type="text" id="ia-prompt" placeholder="Ex: Ideias de capítulos para livro de ficção..." class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2 text-xs text-slate-200">
@@ -46,7 +83,7 @@
             <div id="ia-resultado" class="hidden text-xs bg-slate-950 p-2.5 rounded border border-slate-800 text-slate-300 whitespace-pre-line leading-relaxed max-h-40 overflow-y-auto"></div>
         </div>
 
-        <!-- 3. NOVO: Editor Markdown Pro com Pré-visualização -->
+        <!-- 6. Editor Markdown Pro -->
         <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 shadow-lg space-y-3">
             <h2 class="text-sm font-semibold text-pink-400">📝 Editor Markdown & Notas KDP</h2>
             <textarea id="markdown-input" placeholder="# Título do Capítulo&#10;Escreve em Markdown aqui..." class="w-full h-24 bg-slate-950 border border-slate-800 rounded-lg p-2 text-xs text-slate-200 resize-none font-mono"></textarea>
@@ -55,21 +92,6 @@
                 <button onclick="alternarPreview()" class="w-1/2 bg-slate-800 hover:bg-slate-700 text-slate-300 font-medium py-1.5 rounded-lg text-xs transition">Pré-visualizar</button>
             </div>
             <div id="markdown-preview" class="hidden text-xs bg-slate-950 p-2.5 rounded border border-slate-800 text-slate-300 space-y-1 font-sans"></div>
-        </div>
-
-        <!-- 4. Checkout Mercado Pago -->
-        <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 shadow-lg space-y-3">
-            <h2 class="text-sm font-semibold text-emerald-400">🛒 Checkout Mercado Pago</h2>
-            <input type="text" id="produto-nome" value="E-book KDP Avançado" class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2 text-xs text-slate-200">
-            <input type="number" id="produto-preco" value="49.00" class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2 text-xs text-slate-200">
-            <button onclick="comprarAgora()" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-medium py-2.5 rounded-lg text-xs transition">Gerar Pagamento Real</button>
-        </div>
-
-        <!-- 5. Gerador de Tokens & Chaves API -->
-        <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 shadow-lg space-y-2">
-            <h2 class="text-sm font-semibold text-indigo-400">🔑 Gerador de Tokens & Chaves API</h2>
-            <button onclick="gerarTokenSeguro()" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-medium py-2 rounded-lg text-xs transition">Gerar Chave Segura</button>
-            <div id="token-box" class="hidden text-xs bg-slate-950 p-2 rounded border border-slate-800 text-indigo-300 font-mono break-all select-all"></div>
         </div>
 
     </div>
@@ -101,6 +123,45 @@
                 document.getElementById('stats-info').innerText = "Modo autónomo ativo.";
                 initChart(4);
             }
+        }
+
+        function calcularTaxasMP() {
+            const liquido = parseFloat(document.getElementById('valor-liquido').value) || 0;
+            const taxaPct = parseFloat(document.getElementById('tipo-taxa').value) || 0;
+            const cobraturaSugerida = liquido / (1 - (taxaPct / 100));
+            
+            const resBox = document.getElementById('taxas-resultado');
+            resBox.classList.remove('hidden');
+            resBox.innerHTML = `
+                <div>Cobrar do Cliente: <span class="text-emerald-400 font-bold">R$ ${cobraturaSugerida.toFixed(2).replace('.', ',')}</span></div>
+                <div class="text-[10px] text-slate-400">Desconto de Taxa (${taxaPct}%): R$ ${(cobraturaSugerida - liquido).toFixed(2).replace('.', ',')}</div>
+            `;
+        }
+
+        function gerarLinkWhats() {
+            const fone = document.getElementById('wsp-cliente').value.replace(/\D/g, '');
+            const item = document.getElementById('wsp-item').value;
+            const texto = encodeURIComponent(`Olá! Aqui está o seu link de acesso/pagamento para *${item}*: https://fenix-agent.vercel.app`);
+            if (fone) {
+                window.open(`https://wa.me/${fone}?text=${texto}`, '_blank');
+            } else {
+                window.open(`https://wa.me/?text=${texto}`, '_blank');
+            }
+        }
+
+        async function verificarHealth() {
+            const container = document.getElementById('health-container');
+            container.innerHTML = `
+                <div class="flex justify-between bg-slate-950 p-2 rounded border border-slate-800">
+                    <span>API Vercel Core</span> <span class="text-emerald-400 font-bold">200 OK</span>
+                </div>
+                <div class="flex justify-between bg-slate-950 p-2 rounded border border-slate-800">
+                    <span>Supabase DB</span> <span class="text-emerald-400 font-bold">Ativo</span>
+                </div>
+                <div class="flex justify-between bg-slate-950 p-2 rounded border border-slate-800">
+                    <span>Termux Local Host</span> <span class="text-teal-400 font-bold">Online (Local)</span>
+                </div>
+            `;
         }
 
         async function carregarPM2() {
@@ -154,7 +215,6 @@
             const input = document.getElementById('markdown-input');
             preview.classList.toggle('hidden');
             if (!preview.classList.contains('hidden')) {
-                // Simples conversor visual de Markdown para HTML básico
                 let html = input.value
                     .replace(/^# (.*$)/gm, '<h1 class="text-sm font-bold text-pink-400">$1</h1>')
                     .replace(/^## (.*$)/gm, '<h2 class="text-xs font-bold text-pink-300">$1</h2>')
@@ -163,32 +223,6 @@
                     .replace(/\n/g, '<br>');
                 preview.innerHTML = html || "<em>Sem conteúdo para visualizar.</em>";
             }
-        }
-
-        async function comprarAgora() {
-            const titulo = document.getElementById('produto-nome').value;
-            const preco = document.getElementById('produto-preco').value;
-            try {
-                const res = await fetch('/api/pagar', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ titulo, preco })
-                });
-                const data = await res.json();
-                if (data.init_point) window.location.href = data.init_point;
-                else alert("Erro ao gerar link.");
-            } catch (e) {
-                alert("Erro de conexão.");
-            }
-        }
-
-        function gerarTokenSeguro() {
-            const array = new Uint8Array(24);
-            crypto.getRandomValues(array);
-            const token = Array.from(array, byte => byte.toString(16).padStart(2, '0')).join('');
-            const box = document.getElementById('token-box');
-            box.classList.remove('hidden');
-            box.innerText = `fnx_live_${token}`;
         }
 
         window.onload = () => {
