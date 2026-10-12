@@ -3,245 +3,59 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Centro de Comando Fênix - Enterprise PWA</title>
-    <link rel="manifest" href="/manifest.json">
-    <meta name="theme-color" content="#020617">
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/785/785116.png">
+    <title>Vizinhança Ativa - Conecte-se com quem está perto</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
-<body class="bg-slate-950 text-slate-100 min-h-screen p-4 pb-20">
-    <div class="max-w-md mx-auto space-y-4">
-        
-        <!-- Header -->
-        <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 shadow-lg flex justify-between items-center">
-            <div>
-                <h1 class="text-lg font-bold text-blue-400">🔥 Fênix Enterprise</h1>
-                <p class="text-xs text-slate-400">Cloud Ecosystem & Hub PWA</p>
-            </div>
-            <span class="text-xs bg-emerald-500/10 text-emerald-400 px-2.5 py-1 rounded border border-emerald-500/20 animate-pulse">PWA Ready</span>
+<body class="bg-slate-950 text-slate-100 font-sans antialiased">
+
+    <!-- Hero Section -->
+    <header class="container mx-auto px-6 py-16 text-center">
+        <span class="bg-emerald-500/10 text-emerald-400 text-xs font-semibold px-3 py-1 rounded-full uppercase tracking-wider border border-emerald-500/20">
+            Novo Aplicativo Local
+        </span>
+        <h1 class="text-4xl md:text-6xl font-extrabold mt-6 mb-4 tracking-tight">
+            O fim do isolamento <span class="text-emerald-400">começa na sua rua.</span>
+        </h1>
+        <p class="text-slate-400 text-lg max-w-2xl mx-auto mb-8">
+            Reconecte-se com sua vizinhança. Peça ajuda, ofereça apoio, compartilhe recursos e crie uma rede de segurança real perto de você.
+        </p>
+
+        <!-- Call to Action / Validação Real -->
+        <div class="max-w-md mx-auto bg-slate-900 p-6 rounded-2xl border border-slate-800 shadow-xl">
+            <form action="https://formspree.io/f/xqpavznl" method="POST" class="flex flex-col gap-3">
+                <input type="email" name="email" placeholder="Seu melhor e-mail" required class="bg-slate-950 border border-slate-800 px-4 py-3 rounded-xl text-slate-100 focus:outline-none focus:border-emerald-500">
+                <button type="submit" class="bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold py-3 rounded-xl transition duration-200 cursor-pointer">
+                    Quero acesso antecipado
+                </button>
+            </form>
+            <p class="text-xs text-slate-500 mt-3">Sem spam. Seja avisado quando o app estiver no ar.</p>
         </div>
+    </header>
 
-        <!-- Estatísticas & Gráfico -->
-        <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 shadow-lg space-y-2">
-            <h2 class="text-sm font-semibold text-amber-400">📊 Desempenho de Vendas</h2>
-            <div class="h-32"><canvas id="salesChart"></canvas></div>
-            <p class="text-xs text-slate-300 text-center font-medium" id="stats-info">A sincronizar estatísticas...</p>
+    <!-- Benefícios -->
+    <section class="container mx-auto px-6 py-12 grid md:grid-cols-3 gap-8 text-center">
+        <div class="bg-slate-900/50 p-6 rounded-2xl border border-slate-800/80">
+            <div class="text-emerald-400 text-3xl mb-3">🤝</div>
+            <h3 class="font-bold text-lg mb-2">Rede de Apoio Real</h3>
+            <p class="text-slate-400 text-sm">Encontre pessoas dispostas a ajudar com pequenas tarefas e emergências do dia a dia.</p>
         </div>
-
-        <!-- Health Check -->
-        <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 shadow-lg space-y-2">
-            <h2 class="text-sm font-semibold text-emerald-400">🌐 Health Check de APIs & Tunnels</h2>
-            <div id="health-container" class="space-y-1 text-xs">
-                <div class="flex justify-between bg-slate-950 p-2 rounded border border-slate-800">
-                    <span>API Vercel Core</span> <span class="text-emerald-400 font-bold">200 OK</span>
-                </div>
-                <div class="flex justify-between bg-slate-950 p-2 rounded border border-slate-800">
-                    <span>Supabase DB</span> <span class="text-emerald-400 font-bold">Ativo</span>
-                </div>
-            </div>
-            <button onclick="verificarHealth()" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-medium py-1.5 rounded-lg text-xs transition">Testar Conexões Remotas</button>
+        <div class="bg-slate-900/50 p-6 rounded-2xl border border-slate-800/80">
+            <div class="text-emerald-400 text-3xl mb-3">🛡️</div>
+            <h3 class="font-bold text-lg mb-2">Segurança Coletiva</h3>
+            <p class="text-slate-400 text-sm">Alertas rápidos de bairro e comunicação direta com quem mora ao seu lado.</p>
         </div>
-
-        <!-- Calculadora Taxas MP -->
-        <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 shadow-lg space-y-3">
-            <h2 class="text-sm font-semibold text-amber-400">🧮 Calculadora de Margem & Taxas MP</h2>
-            <div class="space-y-2">
-                <input type="number" id="valor-liquido" placeholder="Quanto quer receber líquido (R$)" value="50.00" class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2 text-xs text-slate-200">
-                <select id="tipo-taxa" class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2 text-xs text-slate-200">
-                    <option value="0.99">Pix (0,99% de taxa)</option>
-                    <option value="4.98">Cartão à Vista (4,98% de taxa)</option>
-                    <option value="9.99">Cartão Parcelado (9,99% de taxa)</option>
-                </select>
-                <button onclick="calcularTaxasMP()" class="w-full bg-amber-600 hover:bg-amber-500 text-white font-medium py-2 rounded-lg text-xs transition">Calcular Preço de Venda Sugerido</button>
-                <div id="taxas-resultado" class="hidden text-xs bg-slate-950 p-2.5 rounded border border-slate-800 text-slate-300 font-medium space-y-1"></div>
-            </div>
+        <div class="bg-slate-900/50 p-6 rounded-2xl border border-slate-800/80">
+            <div class="text-emerald-400 text-3xl mb-3">🌱</div>
+            <h3 class="font-bold text-lg mb-2">Comunidade Ativa</h3>
+            <p class="text-slate-400 text-sm">Troque ferramentas, livros e fortaleça os laços da sua região.</p>
         </div>
+    </section>
 
-        <!-- WhatsApp Cobrança -->
-        <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 shadow-lg space-y-3">
-            <h2 class="text-sm font-semibold text-green-400">💬 Gerador de Cobrança WhatsApp</h2>
-            <input type="text" id="wsp-cliente" placeholder="Telefone do Cliente (ex: 5583999999999)" class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2 text-xs text-slate-200">
-            <input type="text" id="wsp-item" placeholder="Nome do Produto / E-book" value="E-book KDP Avançado" class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2 text-xs text-slate-200">
-            <button onclick="gerarLinkWhats()" class="w-full bg-green-600 hover:bg-green-500 text-white font-medium py-2 rounded-lg text-xs transition">Enviar Cobrança via WhatsApp</button>
-        </div>
+    <!-- Footer -->
+    <footer class="text-center py-8 text-slate-600 text-sm border-t border-slate-900">
+        <p>&copy; 2026 Vizinhança Ativa. Todos os direitos reservados.</p>
+    </footer>
 
-        <!-- Monitor PM2 / Termux -->
-        <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 shadow-lg space-y-2">
-            <h2 class="text-sm font-semibold text-violet-400">⚡ Monitor de Processos (Termux/PM2)</h2>
-            <div id="pm2-container" class="space-y-1.5 text-xs">
-                <div class="bg-slate-950 p-2 rounded border border-slate-800 text-slate-400">A carregar processos...</div>
-            </div>
-            <button onclick="carregarPM2()" class="w-full bg-violet-600 hover:bg-violet-500 text-white font-medium py-1.5 rounded-lg text-xs transition">Atualizar Status de Servidores</button>
-        </div>
-
-        <!-- Assistente IA -->
-        <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 shadow-lg space-y-3">
-            <h2 class="text-sm font-semibold text-cyan-400">🤖 Assistente IA & Marketing KDP</h2>
-            <input type="text" id="ia-prompt" placeholder="Ex: Ideias de capítulos para livro de ficção..." class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2 text-xs text-slate-200">
-            <div class="flex gap-2">
-                <button onclick="executarIA('conteudo')" class="w-1/2 bg-cyan-600 hover:bg-cyan-500 text-white font-medium py-1.5 rounded-lg text-xs transition">Gerar Ideias</button>
-                <button onclick="executarIA('marketing')" class="w-1/2 bg-teal-600 hover:bg-teal-500 text-white font-medium py-1.5 rounded-lg text-xs transition">Estratégia Vendas</button>
-            </div>
-            <div id="ia-resultado" class="hidden text-xs bg-slate-950 p-2.5 rounded border border-slate-800 text-slate-300 whitespace-pre-line leading-relaxed max-h-40 overflow-y-auto"></div>
-        </div>
-
-        <!-- Editor Markdown Pro -->
-        <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 shadow-lg space-y-3">
-            <h2 class="text-sm font-semibold text-pink-400">📝 Editor Markdown & Notas KDP</h2>
-            <textarea id="markdown-input" placeholder="# Título do Capítulo&#10;Escreve em Markdown aqui..." class="w-full h-24 bg-slate-950 border border-slate-800 rounded-lg p-2 text-xs text-slate-200 resize-none font-mono"></textarea>
-            <div class="flex gap-2">
-                <button onclick="salvarMarkdown()" class="w-1/2 bg-pink-600 hover:bg-pink-500 text-white font-medium py-1.5 rounded-lg text-xs transition">Salvar Nota</button>
-                <button onclick="alternarPreview()" class="w-1/2 bg-slate-800 hover:bg-slate-700 text-slate-300 font-medium py-1.5 rounded-lg text-xs transition">Pré-visualizar</button>
-            </div>
-            <div id="markdown-preview" class="hidden text-xs bg-slate-950 p-2.5 rounded border border-slate-800 text-slate-300 space-y-1 font-sans"></div>
-        </div>
-
-    </div>
-
-    <script>
-        // Registar o Service Worker para PWA
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('/sw.js').catch(err => console.log('SW error:', err));
-            });
-        }
-
-        let myChart = null;
-
-        function initChart(vendasHoje) {
-            const ctx = document.getElementById('salesChart').getContext('2d');
-            if(myChart) myChart.destroy();
-            myChart = new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels: ['Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb', 'Hoje'],
-                    datasets: [{ label: 'Vendas', data: [1, 2, 1, 3, 2, 4, vendasHoje], backgroundColor: '#3b82f6', borderRadius: 4 }]
-                },
-                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, grid: { color: '#1e293b' } }, x: { grid: { display: false } } } }
-            });
-        }
-
-        async function carregarEstatisticas() {
-            try {
-                const res = await fetch('/api/vendas/stats');
-                const data = await res.json();
-                const totalFormatado = Number(data.faturamentoTotal || 0).toFixed(2).replace('.', ',');
-                document.getElementById('stats-info').innerHTML = `Hoje: <span class="text-amber-400">${data.vendasHoje || 0} vendas</span> | Total: <span class="text-emerald-400">R$ ${totalFormatado}</span>`;
-                initChart(data.vendasHoje || 0);
-            } catch (e) {
-                document.getElementById('stats-info').innerText = "Modo autónomo ativo.";
-                initChart(4);
-            }
-        }
-
-        function calcularTaxasMP() {
-            const liquido = parseFloat(document.getElementById('valor-liquido').value) || 0;
-            const taxaPct = parseFloat(document.getElementById('tipo-taxa').value) || 0;
-            const cobraturaSugerida = liquido / (1 - (taxaPct / 100));
-            const resBox = document.getElementById('taxas-resultado');
-            resBox.classList.remove('hidden');
-            resBox.innerHTML = `
-                <div>Cobrar do Cliente: <span class="text-emerald-400 font-bold">R$ ${cobraturaSugerida.toFixed(2).replace('.', ',')}</span></div>
-                <div class="text-[10px] text-slate-400">Desconto de Taxa (${taxaPct}%): R$ ${(cobraturaSugerida - liquido).toFixed(2).replace('.', ',')}</div>
-            `;
-        }
-
-        function gerarLinkWhats() {
-            const fone = document.getElementById('wsp-cliente').value.replace(/\D/g, '');
-            const item = document.getElementById('wsp-item').value;
-            const texto = encodeURIComponent(`Olá! Aqui está o seu link de acesso/pagamento para *${item}*: https://fenix-agent.vercel.app`);
-            if (fone) {
-                window.open(`https://wa.me/${fone}?text=${texto}`, '_blank');
-            } else {
-                window.open(`https://wa.me/?text=${texto}`, '_blank');
-            }
-        }
-
-        async function verificarHealth() {
-            const container = document.getElementById('health-container');
-            container.innerHTML = `
-                <div class="flex justify-between bg-slate-950 p-2 rounded border border-slate-800">
-                    <span>API Vercel Core</span> <span class="text-emerald-400 font-bold">200 OK</span>
-                </div>
-                <div class="flex justify-between bg-slate-950 p-2 rounded border border-slate-800">
-                    <span>Supabase DB</span> <span class="text-emerald-400 font-bold">Ativo</span>
-                </div>
-                <div class="flex justify-between bg-slate-950 p-2 rounded border border-slate-800">
-                    <span>Termux Local Host</span> <span class="text-teal-400 font-bold">Online (Local)</span>
-                </div>
-            `;
-        }
-
-        async function carregarPM2() {
-            const container = document.getElementById('pm2-container');
-            container.innerHTML = `<div class="bg-slate-950 p-2 rounded border border-slate-800 text-slate-400">A verificar processos...</div>`;
-            try {
-                const res = await fetch('/api/pm2/status');
-                const data = await res.json();
-                container.innerHTML = '';
-                data.processes.forEach(p => {
-                    const div = document.createElement('div');
-                    div.className = "flex justify-between items-center bg-slate-950 p-2 rounded border border-slate-800 text-slate-300";
-                    div.innerHTML = `<span>🟢 ${p.name}</span> <span class="text-[10px] text-violet-400">Mem: ${p.memory} | CPU: ${p.cpu}</span>`;
-                    container.appendChild(div);
-                });
-            } catch (e) {
-                container.innerHTML = `<div class="bg-slate-950 p-2 rounded border border-slate-800 text-rose-400">Erro ao carregar processos PM2.</div>`;
-            }
-        }
-
-        async function executarIA(acao) {
-            const prompt = document.getElementById('ia-prompt').value;
-            const resBox = document.getElementById('ia-resultado');
-            if (!prompt) {
-                alert("Escreve um tópico para a IA.");
-                return;
-            }
-            resBox.classList.remove('hidden');
-            resBox.innerText = "A consultar inteligência artificial...";
-            try {
-                const res = await fetch('/api/ia/processar', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ prompt, acao })
-                });
-                const data = await res.json();
-                resBox.innerText = data.resultado;
-            } catch (e) {
-                resBox.innerText = "Erro ao comunicar com o serviço de IA.";
-            }
-        }
-
-        function salvarMarkdown() {
-            const texto = document.getElementById('markdown-input').value;
-            localStorage.setItem('fenix_markdown', texto);
-            alert("Nota Markdown guardada com sucesso!");
-        }
-
-        function alternarPreview() {
-            const preview = document.getElementById('markdown-preview');
-            const input = document.getElementById('markdown-input');
-            preview.classList.toggle('hidden');
-            if (!preview.classList.contains('hidden')) {
-                let html = input.value
-                    .replace(/^# (.*$)/gm, '<h1 class="text-sm font-bold text-pink-400">$1</h1>')
-                    .replace(/^## (.*$)/gm, '<h2 class="text-xs font-bold text-pink-300">$1</h2>')
-                    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-                    .replace(/\*(.*?)\*/g, '<em>$1</em>')
-                    .replace(/\n/g, '<br>');
-                preview.innerHTML = html || "<em>Sem conteúdo para visualizar.</em>";
-            }
-        }
-
-        window.onload = () => {
-            const salvo = localStorage.getItem('fenix_markdown');
-            if(salvo) document.getElementById('markdown-input').value = salvo;
-            carregarEstatisticas();
-            carregarPM2();
-        };
-    </script>
 </body>
 </html>
+
